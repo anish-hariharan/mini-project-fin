@@ -13,6 +13,7 @@ const LogInForm = () => {
   const handleLogIn = (e) => {
     e.preventDefault();
     if (userName === "anish" && password === "anish@1234") {
+      localStorage.setItem("userInfo", userName);
       navigate("/home");
     } else {
       console.log("error");
