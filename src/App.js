@@ -3,6 +3,7 @@ import "./App.css";
 import LogInForm from "./components/LoginForm";
 import PrivateRouter from "./router/PrivateRouter";
 import ProtectedRoute from "./router/ProtectedRoute";
+import CustomersList from "./components/Customers";
 
 function App() {
   return (
@@ -20,7 +21,7 @@ function App() {
           path="/home"
           element={
             <ProtectedRoute>
-              <h1>Home page!</h1>
+              <CustomersList />
             </ProtectedRoute>
           }
         />
