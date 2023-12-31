@@ -51,9 +51,11 @@
     display: flex;
     justify-content: center;
     height: 50vh;
-    width: 25vw;
+    width: 100%;
     background-color: #FFFFFF;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-left: 10px;
+    margin-right: 10px;
 }
 
 .formContainer {
