@@ -1,15 +1,29 @@
 import { useState } from "react";
 import "./AddUser.css";
+import { useDispatch } from "react-redux";
+import { addUser } from "../redux/actions/UserActions";
 
 const AddUser = () => {
+  const dispatch = useDispatch();
   const [firstName, setFirstName] = useState("");
   const [lastName, setLatName] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [aadharNumber, setAadharNumber] = useState("");
+  const [id, setId] = useState("12");
 
   const handleAddUser = (event) => {
     event.preventDefault();
-    console.log("event : ", { firstName, lastName, phoneNumber, aadharNumber });
+    dispatch(
+      addUser({
+        firstName,
+        lastName,
+        contact: phoneNumber,
+        aadharNumber,
+        id: Number(id) + 1,
+      })
+    );
+
+    setId((Number(id) + 1).toString());
   };
 
   return (
