@@ -4,6 +4,8 @@ import LogInForm from "./components/LoginForm";
 import PrivateRouter from "./router/PrivateRouter";
 import ProtectedRoute from "./router/ProtectedRoute";
 import CustomersList from "./components/Customers";
+import Header from "./components/Header";
+import AddUser from "./components/AddUser";
 
 function App() {
   return (
@@ -17,14 +19,24 @@ function App() {
             </PrivateRouter>
           }
         />
-        <Route
-          path="/home"
-          element={
-            <ProtectedRoute>
-              <CustomersList />
-            </ProtectedRoute>
-          }
-        />
+        <Route element={<Header />}>
+          <Route
+            path="/home"
+            element={
+              <ProtectedRoute>
+                <CustomersList />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/addUser"
+            element={
+              <ProtectedRoute>
+                <AddUser />
+              </ProtectedRoute>
+            }
+          />
+        </Route>
       </Routes>
     </div>
   );

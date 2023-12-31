@@ -1,7 +1,7 @@
 .user-table {
     border-collapse: collapse;
     width: 100%;
-    margin-top: 20px;
+    box-shadow: 5px 5px 10px 0px rgba(0, 0, 0, 0.2);
   }
   
   .user-table th, .user-table td {
@@ -22,4 +22,8 @@
 
 .navContainer {
     margin-top: auto;
+}
+
+.parentContainer {
+    padding: 0px 20px 20px 20px;
 }

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import "./Customers.css";
 import Pagination from "./Pagination";
 
@@ -91,7 +91,7 @@ const CustomersList = () => {
   ];
 
   const [currentPage, setCurrentPage] = useState(1);
-  const usersPerPage = 5;
+  const usersPerPage = 15;
 
   const indexOfLastUser = currentPage * usersPerPage;
   const indexOfFirstUser = indexOfLastUser - usersPerPage;
@@ -103,33 +103,39 @@ const CustomersList = () => {
     <>
       <div className="tableAndNavContainer">
         <div>
-          <h2>User Tables</h2>
+          <h3>Users Table</h3>
         </div>
-        <div>
-          <table className="user-table">
-            <thead>
-              <tr>
-                <th>First name</th>
-                <th>Last name</th>
-                <th>contact</th>
-                <th>Aadhar number</th>
-              </tr>
-            </thead>
-            {currentUsers.length > 0 && (
-              <tbody className="user-tabletd">
-                {currentUsers.map((user) => {
-                  return (
-                    <tr key={user.contact}>
-                      <td>{user.firstName}</td>
-                      <td>{user.lastName}</td>
-                      <td>{user.contact}</td>
-                      <td>{user.aadharNumber}</td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            )}
-          </table>
+        <div className="parentContainer">
+          {currentUsers.length > 0 ? (
+            <table className="user-table">
+              <thead>
+                <tr>
+                  <th>First name</th>
+                  <th>Last name</th>
+                  <th>contact</th>
+                  <th>Aadhar number</th>
+                </tr>
+              </thead>
+              {currentUsers.length > 0 && (
+                <tbody className="user-tabletd">
+                  {currentUsers.map((user) => {
+                    return (
+                      <tr key={user.contact}>
+                        <td>{user.firstName}</td>
+                        <td>{user.lastName}</td>
+                        <td>{user.contact}</td>
+                        <td>{user.aadharNumber}</td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              )}
+            </table>
+          ) : (
+            <div>
+              <p>No data found</p>
+            </div>
+          )}
         </div>
         <div className="navContainer">
           <Pagination
