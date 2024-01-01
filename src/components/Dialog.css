@@ -1,0 +1,66 @@
+.dialogBackdrop{
+    z-index: 2;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.dialogContainer {
+    width: 50%;
+    height: 50%;
+    display: flex;
+    justify-content: space-around;
+    flex-direction: column;
+    background-color: #FFFFFF;
+}
+
+.dialogContent {
+    display: flex;
+    align-content: flex-start;
+    padding: 15px;
+}
+
+.dialogButton{
+    display: flex;
+    justify-content: flex-end;
+    padding: 15px;
+}
+
+.closeButton {
+    display: inline-block;
+    outline: 0;
+    cursor: pointer;
+    padding: 5px 16px;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    vertical-align: middle;
+    border: 1px solid;
+    border-radius: 6px;
+    color: #ffffff;
+    background-color: #2ea44f;
+    border-color: #1b1f2326;
+    box-shadow: rgba(27, 31, 35, 0.04) 0px 1px 0px 0px, rgba(255, 255, 255, 0.25) 0px 1px 0px 0px inset;
+    transition: 0.2s cubic-bezier(0.3, 0, 0.5, 1);
+    transition-property: color, background-color, border-color;
+}
+
+
+.closeButton:hover {
+    background-color: #2c974b;
+    border-color: #1b1f2326;
+    transition-duration: 0.1s;
+}
+
+@media only screen and (max-width: 767px) {
+    .dialogContainer {
+        width: 90%;
+        height: 25%;
+    }
+  }

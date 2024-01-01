@@ -91,12 +91,10 @@ const initialState = {
 
 const userReducer = (state = initialState, action) => {
   if (action.type === GET_USERS) {
-    console.log("state : ", state);
     return state;
   }
 
   if (action.type === ADD_USER) {
-    console.log("state : ", state);
     return {
       users: [...state.users, action.payload],
     };

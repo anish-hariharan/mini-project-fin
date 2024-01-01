@@ -1,15 +1,19 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./AddUser.css";
 import { useDispatch } from "react-redux";
 import { addUser } from "../redux/actions/UserActions";
+import Dialog from "./Dialog";
 
 const AddUser = () => {
   const dispatch = useDispatch();
   const [firstName, setFirstName] = useState("");
-  const [lastName, setLatName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [aadharNumber, setAadharNumber] = useState("");
   const [id, setId] = useState("12");
+  const [open, setOpen] = useState(false);
+  const [phoneNumberError, setPhoneNumberError] = useState("");
+  const [aadharNumberError, setAadharNumberError] = useState("");
 
   const handleAddUser = (event) => {
     event.preventDefault();
@@ -24,19 +28,64 @@ const AddUser = () => {
     );
 
     setId((Number(id) + 1).toString());
+    setOpen(true);
   };
+
+  const clearForm = () => {
+    setFirstName("");
+    setLastName("");
+    setPhoneNumber("");
+    setAadharNumber("");
+  };
+
+  const closeModel = () => {
+    setOpen(false);
+    clearForm();
+  };
+
+  const HandleNumber = (e, type) => {
+    const numberPattern = /^[0-9]*$/;
+
+    const { func } = {
+      PHONE: {
+        func: setPhoneNumber,
+      },
+      AADHAR: {
+        func: setAadharNumber,
+      },
+    }[type];
+
+    if (numberPattern.test(e.target.value)) {
+      func(e.target.value);
+    }
+
+    return;
+  };
+
+  useEffect(() => {
+    if (phoneNumber.length > 10) {
+      setPhoneNumberError("Invalid Phone number");
+    } else {
+      setPhoneNumberError("");
+    }
+
+    if (aadharNumber.length > 12) {
+      setAadharNumberError("Invalid aadhar number");
+    } else {
+      setAadharNumberError("");
+    }
+  }, [phoneNumber, aadharNumber]);
 
   return (
     <>
       <div>
-        <div
-          style={{
-            height: "100%",
-            marginTop: "0px",
-            display: "flex",
-            justifyContent: "center",
-          }}
-        >
+        <div className="addUserDormContainer">
+          <Dialog
+            open={open}
+            content={"Added the user successfully"}
+            heading={"Add User"}
+            onclose={closeModel}
+          />
           <form className="addUserForm" onSubmit={handleAddUser}>
             <div>
               <h2 style={{ margin: "0%" }}>Add User</h2>
@@ -55,7 +104,13 @@ const AddUser = () => {
                   className="inputBox"
                   title="firstName"
                   style={{ width: "100%" }}
-                  onChange={(e) => setFirstName(e.target.value)}
+                  onInput={(e) => setFirstName(e.target.value)}
+                  value={firstName}
+                  required
+                  onInvalid={(e) => {
+                    e.target.setCustomValidity("Please enter your first name");
+                    e.target.setCustomValidity("");
+                  }}
                 />
               </div>
             </div>
@@ -72,7 +127,13 @@ const AddUser = () => {
                   type="text"
                   className="inputBox"
                   style={{ width: "100%" }}
-                  onChange={(e) => setLatName(e.target.value)}
+                  onChange={(e) => setLastName(e.target.value)}
+                  value={lastName}
+                  onInvalid={(e) => {
+                    e.target.setCustomValidity("Please enter your last name");
+                    e.target.setCustomValidity("");
+                  }}
+                  required
                 />
               </div>
             </div>
@@ -89,9 +150,24 @@ const AddUser = () => {
                   type="tel"
                   className="inputBox"
                   style={{ width: "100%" }}
-                  onChange={(e) => setPhoneNumber(e.target.value)}
+                  onChange={(e) => {
+                    HandleNumber(e, "PHONE");
+                    e.target.setCustomValidity("");
+                  }}
+                  value={phoneNumber}
+                  onInvalid={(e) => {
+                    e.target.setCustomValidity(
+                      "Please enter your phone number"
+                    );
+                  }}
+                  required
                 />
               </div>
+              {phoneNumberError && (
+                <div className="warningMessage">
+                  <p>{phoneNumberError}</p>
+                </div>
+              )}
             </div>
             <div className="addUserInputContainer">
               <div className="labelContainerAU">
@@ -106,9 +182,24 @@ const AddUser = () => {
                   type="text"
                   className="inputBox"
                   style={{ width: "100%" }}
-                  onChange={(e) => setAadharNumber(e.target.value)}
+                  onChange={(e) => {
+                    HandleNumber(e, "AADHAR");
+                    e.target.setCustomValidity("");
+                  }}
+                  value={aadharNumber}
+                  onInvalid={(e) => {
+                    e.target.setCustomValidity(
+                      "Please enter your aadhar number"
+                    );
+                  }}
+                  required
                 />
               </div>
+              {aadharNumberError && (
+                <div className="warningMessage">
+                  <p>Aadhar number is a required field</p>
+                </div>
+              )}
             </div>
             <div className="addUseButton">
               <button

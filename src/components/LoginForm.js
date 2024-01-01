@@ -1,14 +1,17 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./LoginForm.css";
+import Dialog from "./Dialog";
 
 const LogInForm = () => {
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const [open, setOpen] = useState(false);
 
   const handleUserName = (e) => setUserName(e.target.value);
   const handlePassword = (e) => setPassword(e.target.value);
+  const handleCloseDialog = () => setOpen(false);
 
   const handleLogIn = (e) => {
     e.preventDefault();
@@ -16,13 +19,19 @@ const LogInForm = () => {
       localStorage.setItem("userInfo", userName);
       navigate("/home");
     } else {
-      console.log("error");
+      setOpen(true);
     }
   };
 
   const enableSubmitBtn = userName !== "" && password !== "";
   return (
     <>
+      <Dialog
+        content="Invalid username or password"
+        heading="Error"
+        onclose={handleCloseDialog}
+        open={open}
+      />
       <div className="formContainer">
         <form onSubmit={handleLogIn} className="loginForm">
           <div className="formDiv">
