@@ -14,9 +14,29 @@ const AddUser = () => {
   const [open, setOpen] = useState(false);
   const [phoneNumberError, setPhoneNumberError] = useState("");
   const [aadharNumberError, setAadharNumberError] = useState("");
+  const [message, setMessage] = useState("");
+  const [heading, setHeading] = useState("");
+  const [resetForm, setResetForm] = useState(true);
 
   const handleAddUser = (event) => {
     event.preventDefault();
+
+    if (phoneNumber.length !== 10) {
+      setOpen(true);
+      setMessage("Phone number should have minimum 10 digts");
+      setHeading("Error");
+      setResetForm(false);
+      return;
+    }
+
+    if (aadharNumber.length !== 12) {
+      setOpen(true);
+      setMessage("Aadhar number should have minimum 12 digts");
+      setHeading("Error");
+      setResetForm(false);
+      return;
+    }
+
     dispatch(
       addUser({
         firstName,
@@ -29,6 +49,9 @@ const AddUser = () => {
 
     setId((Number(id) + 1).toString());
     setOpen(true);
+    setMessage("Added the user successfully");
+    setHeading("Add User");
+    setResetForm(true);
   };
 
   const clearForm = () => {
@@ -40,7 +63,7 @@ const AddUser = () => {
 
   const closeModel = () => {
     setOpen(false);
-    clearForm();
+    resetForm && clearForm();
   };
 
   const HandleNumber = (e, type) => {
@@ -82,8 +105,8 @@ const AddUser = () => {
         <div className="addUserDormContainer">
           <Dialog
             open={open}
-            content={"Added the user successfully"}
-            heading={"Add User"}
+            content={message}
+            heading={heading}
             onclose={closeModel}
           />
           <form className="addUserForm" onSubmit={handleAddUser}>

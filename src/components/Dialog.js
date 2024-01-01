@@ -12,7 +12,7 @@ const Dialog = ({ open, content, heading, onclose }) => {
           <div className="dialogContainer">
             <div className="dialogContent">
               <div>
-                <strong>{heading}</strong>
+                <strong>{heading || "Error"}</strong>
               </div>
             </div>
             <div className="dialogContent">
