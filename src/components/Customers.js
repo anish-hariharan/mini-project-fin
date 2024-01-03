@@ -2,6 +2,7 @@ import { useState } from "react";
 import "./Customers.css";
 import Pagination from "./Pagination";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 const CustomersList = () => {
   const usersFromRedux = useSelector((state) => state.store.users);
@@ -38,7 +39,9 @@ const CustomersList = () => {
                   {currentUsers.map((user) => {
                     return (
                       <tr key={user.contact}>
-                        <td>{user.firstName}</td>
+                        <td>
+                          <Link to={`/user/${user.id}`}>{user.firstName}</Link>
+                        </td>
                         <td>{user.lastName}</td>
                         <td>{user.contact}</td>
                         <td>{user.aadharNumber}</td>
@@ -53,13 +56,13 @@ const CustomersList = () => {
               <p>No data found</p>
             </div>
           )}
-        </div>
-        <div className="navContainer">
-          <Pagination
-            paginate={paginate}
-            totalUsers={users.length}
-            usersPerPage={5}
-          />
+          <div className="navContainer">
+            <Pagination
+              paginate={paginate}
+              totalUsers={users.length}
+              usersPerPage={15}
+            />
+          </div>
         </div>
       </div>
     </>

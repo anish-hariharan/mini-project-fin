@@ -220,7 +220,7 @@ const AddUser = () => {
               </div>
               {aadharNumberError && (
                 <div className="warningMessage">
-                  <p>Aadhar number is a required field</p>
+                  <p>Invalid Aadhar number</p>
                 </div>
               )}
             </div>

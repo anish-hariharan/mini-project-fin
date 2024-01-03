@@ -6,6 +6,7 @@ import ProtectedRoute from "./router/ProtectedRoute";
 import CustomersList from "./components/Customers";
 import Header from "./components/Header";
 import AddUser from "./components/AddUser";
+import UserView from "./components/UserView";
 
 function App() {
   return (
@@ -33,6 +34,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <AddUser />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/user/:id"
+            element={
+              <ProtectedRoute>
+                <UserView />
               </ProtectedRoute>
             }
           />
