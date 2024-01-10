@@ -1,0 +1,23 @@
+.parentAddAcademicContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.labelAddAcademicContainer {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+}
+
+.selectContainer {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.selectField {
+    width: 90%;
+    padding: 5px;
+    font-size: large;
+}
