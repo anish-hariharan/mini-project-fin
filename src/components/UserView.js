@@ -11,6 +11,10 @@ const UserView = () => {
     return users.find((user) => user.id === param.id);
   });
   const [openAddAcademicForm, setAddAcademicForm] = useState();
+  const totalClass =
+    user.educationHistory.length > 0
+      ? user.educationHistory.map((history) => history.class)
+      : [];
 
   const handleOpenAddAcademicForm = () => setAddAcademicForm(true);
   const handleCloseAddAcademicForm = () => setAddAcademicForm(false);
@@ -74,7 +78,12 @@ const UserView = () => {
             )}
           </div>
           <div>
-            <button onClick={handleOpenAddAcademicForm}>Add Academic</button>
+            <button
+              onClick={handleOpenAddAcademicForm}
+              disabled={totalClass.length === 12}
+            >
+              Add Academic
+            </button>
           </div>
           <AddNewAcademicsForm
             open={openAddAcademicForm}

@@ -1,4 +1,4 @@
-import { ADD_USER, GET_USERS } from "../actions/ActionTypes.js";
+import { ADD_ACADEMICS, ADD_USER, GET_USERS } from "../actions/ActionTypes.js";
 
 const initialState = {
   users: [
@@ -204,6 +204,7 @@ const initialState = {
       lastName: "user",
       contact: "9233211246",
       aadharNumber: "1231231236",
+      educationHistory: [],
     },
     {
       id: "6",
@@ -211,6 +212,7 @@ const initialState = {
       lastName: "user",
       contact: "9233211247",
       aadharNumber: "1231231237",
+      educationHistory: [],
     },
     {
       id: "7",
@@ -218,6 +220,7 @@ const initialState = {
       lastName: "user",
       contact: "9233211248",
       aadharNumber: "1231231238",
+      educationHistory: [],
     },
     {
       id: "8",
@@ -225,6 +228,7 @@ const initialState = {
       lastName: "user",
       contact: "9233211249",
       aadharNumber: "1231231239",
+      educationHistory: [],
     },
     {
       id: "9",
@@ -232,6 +236,7 @@ const initialState = {
       lastName: "user",
       contact: "9233211211",
       aadharNumber: "1231231211",
+      educationHistory: [],
     },
     {
       id: "10",
@@ -239,6 +244,7 @@ const initialState = {
       lastName: "user",
       contact: "9233211212",
       aadharNumber: "1231231212",
+      educationHistory: [],
     },
     {
       id: "11",
@@ -246,6 +252,7 @@ const initialState = {
       lastName: "user",
       contact: "9233211213",
       aadharNumber: "1231231213",
+      educationHistory: [],
     },
     {
       id: "12",
@@ -253,6 +260,7 @@ const initialState = {
       lastName: "user",
       contact: "9233211214",
       aadharNumber: "1231231214",
+      educationHistory: [],
     },
   ],
 };
@@ -265,6 +273,23 @@ const userReducer = (state = initialState, action) => {
   if (action.type === ADD_USER) {
     return {
       users: [...state.users, action.payload],
+    };
+  }
+
+  if (action.type === ADD_ACADEMICS) {
+    const { id, updatedHistory } = action.payload;
+    const user = state.users.find((user) => user.id === id);
+    const updatedUser = { ...user, educationHistory: [...updatedHistory] };
+    const updatedState = state.users.map((user) => {
+      if (user.id === id) {
+        return updatedUser;
+      }
+
+      return user;
+    });
+
+    return {
+      users: [...updatedState],
     };
   }
 

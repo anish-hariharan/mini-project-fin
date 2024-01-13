@@ -1,10 +1,12 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Dialog from "./Dialog";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import "./AddNewAcademicsForm.css";
+import { addAcademics } from "../redux/actions/UserActions";
 
 const AddNewAcademicsForm = ({ open, onClose }) => {
+  const dispatch = useDispatch();
   const params = useParams();
   const [selectedStandard, setStandard] = useState("");
   const [selectDepartment, setDepartment] = useState("");
@@ -14,7 +16,7 @@ const AddNewAcademicsForm = ({ open, onClose }) => {
   );
   const [availableClass, setAvailableClass] = useState([]);
 
-  const totalClass = [
+  const totalAcademicses = [
     "1",
     "2",
     "3",
@@ -31,16 +33,51 @@ const AddNewAcademicsForm = ({ open, onClose }) => {
   const availableDepartment = ["Maths Biology", "Maths ComputerScience"];
 
   const handleChangeStandard = (e) => {
-    console.log("event : ", e);
     setStandard(e.target.value);
   };
   const handleChangeDepartment = (e) => {
     setDepartment(e.target.value);
   };
+  const handleClose = () => onClose();
 
   const handleFormSubmit = () => {
-    console.log("selectedStandard : ", selectedStandard);
-    console.log("selectDepartment : ", selectDepartment);
+    const educationHistory = user.educationHistory;
+
+    const updatedHistory = [
+      ...educationHistory,
+      {
+        class: selectedStandard,
+        examsAndScores: [
+          {
+            examName: "Quaterly",
+            english: "N/A",
+            maths: "N/A",
+            science: "N/A",
+            social: "N/A",
+            tamil: "N/A",
+          },
+          {
+            examName: "HalfYearly",
+            english: "N/A",
+            maths: "N/A",
+            science: "N/A",
+            social: "N/A",
+            tamil: "N/A",
+          },
+          {
+            examName: "Annual",
+            english: "N/A",
+            maths: "N/A",
+            science: "N/A",
+            social: "N/A",
+            tamil: "N/A",
+          },
+        ],
+      },
+    ];
+
+    dispatch(addAcademics({ id: params.id, updatedHistory }));
+    handleClose();
   };
 
   useEffect(() => {
@@ -48,15 +85,13 @@ const AddNewAcademicsForm = ({ open, onClose }) => {
       ? user.educationHistory.map((education) => education.class)
       : [];
 
-    const filteredArray = totalClass.filter(
+    const filteredArray = totalAcademicses.filter(
       (item) => !userClass.includes(item)
     );
 
     setAvailableClass(filteredArray);
     setStandard(filteredArray[0]);
   }, [user]);
-
-  const handleClose = () => onClose();
 
   return (
     <>
@@ -79,12 +114,14 @@ const AddNewAcademicsForm = ({ open, onClose }) => {
                 className="selectField"
                 value={selectedStandard}
                 onChange={(e) => handleChangeStandard(e)}
-                defaultValue={""}
               >
-                {availableClass.length &&
+                {availableClass.length ? (
                   availableClass.map((standard, index) => (
                     <option key={index}>{standard}</option>
-                  ))}
+                  ))
+                ) : (
+                  <option>No class available</option>
+                )}
               </select>
             </div>
           </div>
