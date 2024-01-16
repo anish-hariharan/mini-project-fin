@@ -11,6 +11,7 @@ const initialState = {
       educationHistory: [
         {
           class: "1",
+          department: "BELOWTEN",
           examsAndScores: [
             {
               examName: "Quaterly",
@@ -52,6 +53,7 @@ const initialState = {
       educationHistory: [
         {
           class: "1",
+          department: "BELOWTEN",
           examsAndScores: [
             {
               examName: "Quaterly",
@@ -84,6 +86,7 @@ const initialState = {
         },
         {
           class: "2",
+          department: "BELOWTEN",
           examsAndScores: [
             {
               examName: "Quaterly",
@@ -125,6 +128,7 @@ const initialState = {
       educationHistory: [
         {
           class: "1",
+          department: "BELOWTEN",
           examsAndScores: [
             {
               examName: "Quaterly",
@@ -166,6 +170,7 @@ const initialState = {
       educationHistory: [
         {
           class: "1",
+          department: "BELOWTEN",
           examsAndScores: [
             {
               examName: "Quaterly",

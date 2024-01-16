@@ -26,4 +26,6 @@
 
 .parentContainer {
     padding: 0px 20px 20px 20px;
+    overflow-x: auto;
+    max-width: 100%;
 }

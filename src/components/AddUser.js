@@ -43,7 +43,8 @@ const AddUser = () => {
         lastName,
         contact: phoneNumber,
         aadharNumber,
-        id: Number(id) + 1,
+        id: (Number(id) + 1).toString(),
+        educationHistory: [],
       })
     );
 

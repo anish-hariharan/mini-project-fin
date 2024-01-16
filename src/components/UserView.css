@@ -20,11 +20,13 @@
     background-color: #f2f2f2;
   }
 
-  .tableContainer {
+  .tableContainerUV {
     padding: 20px 20px 20px 20px;
+    overflow-x: auto;
+    max-width: 100%;
   }
 
-  .parentContainer {
+  .parentContainerUV {
     display: flex;
     justify-content: center;
     flex-direction: column;

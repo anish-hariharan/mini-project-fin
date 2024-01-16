@@ -30,9 +30,24 @@ const AddNewAcademicsForm = ({ open, onClose }) => {
     "11",
     "12",
   ];
-  const availableDepartment = ["Maths Biology", "Maths ComputerScience"];
+  const availableDepartment = [
+    "Below 10",
+    "Maths Biology",
+    "Maths ComputerScience",
+  ];
+
+  const departmentEnum = {
+    Below10: "BELOWTEN",
+    MathsBiology: "MATHSBIOLOGY",
+    MathsComputerScience: "MATHSCOMPUTER",
+  };
 
   const handleChangeStandard = (e) => {
+    if (e.target.value <= 10) {
+      setDepartment("Below 10");
+    } else {
+      setDepartment(availableDepartment[1]);
+    }
     setStandard(e.target.value);
   };
   const handleChangeDepartment = (e) => {
@@ -47,30 +62,70 @@ const AddNewAcademicsForm = ({ open, onClose }) => {
       ...educationHistory,
       {
         class: selectedStandard,
+        department: departmentEnum[selectDepartment.replace(/\s/g, "")],
         examsAndScores: [
           {
             examName: "Quaterly",
             english: "N/A",
             maths: "N/A",
-            science: "N/A",
-            social: "N/A",
             tamil: "N/A",
+            ...(selectDepartment === "Below 10" && {
+              science: "N/A",
+              social: "N/A",
+            }),
+            ...(selectDepartment !== "Below 10" && {
+              physics: "N/A",
+              chemistry: "N/A",
+            }),
+
+            ...(selectDepartment === "Maths Biology" && {
+              biology: "N/A",
+            }),
+            ...(selectDepartment === "Maths ComputerScience" && {
+              computerScience: "N/A",
+            }),
           },
           {
             examName: "HalfYearly",
             english: "N/A",
             maths: "N/A",
-            science: "N/A",
-            social: "N/A",
             tamil: "N/A",
+            ...(selectDepartment === "Below 10" && {
+              science: "N/A",
+              social: "N/A",
+            }),
+            ...(selectDepartment !== "Below 10" && {
+              physics: "N/A",
+              chemistry: "N/A",
+            }),
+
+            ...(selectDepartment === "Maths Biology" && {
+              biology: "N/A",
+            }),
+            ...(selectDepartment === "Maths ComputerScience" && {
+              computerScience: "N/A",
+            }),
           },
           {
             examName: "Annual",
             english: "N/A",
             maths: "N/A",
-            science: "N/A",
-            social: "N/A",
             tamil: "N/A",
+            ...(selectDepartment === "Below 10" && {
+              science: "N/A",
+              social: "N/A",
+            }),
+            ...(selectDepartment !== "Below 10" && {
+              physics: "N/A",
+              chemistry: "N/A",
+            }),
+
+            ...(selectDepartment === "Maths Biology" && {
+              biology: "N/A",
+            }),
+            ...(selectDepartment === "Maths ComputerScience" && {
+              computerScience: "N/A",
+            }),
           },
         ],
       },
@@ -91,7 +146,8 @@ const AddNewAcademicsForm = ({ open, onClose }) => {
 
     setAvailableClass(filteredArray);
     setStandard(filteredArray[0]);
-  }, [user]);
+    setDepartment(selectedStandard <= 10 ? "Below 10" : "Maths Biology");
+  }, [user, selectedStandard]);
 
   return (
     <>
@@ -138,7 +194,17 @@ const AddNewAcademicsForm = ({ open, onClose }) => {
               >
                 {availableDepartment.length &&
                   availableDepartment.map((department, index) => (
-                    <option key={index}>{department}</option>
+                    <option
+                      key={index}
+                      disabled={
+                        (department === "Below 10" && selectedStandard > 10) ||
+                        ((department === "Maths Biology" ||
+                          department === "Maths ComputerScience") &&
+                          selectedStandard < 10)
+                      }
+                    >
+                      {department}
+                    </option>
                   ))}
               </select>
             </div>

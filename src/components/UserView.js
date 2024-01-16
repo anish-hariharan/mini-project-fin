@@ -19,6 +19,41 @@ const UserView = () => {
   const handleOpenAddAcademicForm = () => setAddAcademicForm(true);
   const handleCloseAddAcademicForm = () => setAddAcademicForm(false);
 
+  const tableSubjects = {
+    BELOWTEN: (
+      <>
+        <th>Examiation</th>
+        <th>Tamil</th>
+        <th>English</th>
+        <th>Maths</th>
+        <th>Science</th>
+        <th>Social</th>
+      </>
+    ),
+    MATHSBIOLOGY: (
+      <>
+        <th>Examiation</th>
+        <th>Tamil</th>
+        <th>English</th>
+        <th>Maths</th>
+        <th>Physics</th>
+        <th>Chemistry</th>
+        <th>Biology</th>
+      </>
+    ),
+    MATHSCOMPUTER: (
+      <>
+        <th>Examiation</th>
+        <th>Tamil</th>
+        <th>English</th>
+        <th>Maths</th>
+        <th>Physics</th>
+        <th>Chemistry</th>
+        <th>Computer Science</th>
+      </>
+    ),
+  };
+
   return (
     <>
       <div style={{ width: "100%" }}>
@@ -29,30 +64,25 @@ const UserView = () => {
               {user.lastName.charAt(0).toUpperCase() + user.lastName.slice(1)},
             </h1>
           </div>
-          <div className="tableContainer">
+          <div className="tableContainerUV">
             {user.educationHistory ? (
               user.educationHistory.map((education, index) => {
                 return (
-                  <div className="parentContainer" key={index}>
+                  <div className="parentContainerUV" key={index}>
                     <div
                       style={{
                         display: "flex",
                         justifyContent: "flex-start",
                       }}
                     >
-                      <h1>Standard {education.class}</h1>
+                      <h1 style={{ position: "sticky" }}>
+                        Standard {education.class}
+                      </h1>
                     </div>
                     <div>
                       <table className="user-table">
                         <thead>
-                          <tr>
-                            <th>Examiation</th>
-                            <th>Tamil</th>
-                            <th>English</th>
-                            <th>Maths</th>
-                            <th>Science</th>
-                            <th>Social</th>
-                          </tr>
+                          <tr>{tableSubjects[education.department]}</tr>
                         </thead>
                         <tbody>
                           {education?.examsAndScores.map((value, index) => {
@@ -62,8 +92,11 @@ const UserView = () => {
                                 <td>{value.tamil}</td>
                                 <td>{value.english}</td>
                                 <td>{value.maths}</td>
-                                <td>{value.science}</td>
-                                <td>{value.social}</td>
+                                {value?.science && <td>{value.science}</td>}
+                                {value?.social && <td>{value.social}</td>}
+                                {value?.physics && <td>{value.physics}</td>}
+                                {value?.physics && <td>{value.physics}</td>}
+                                {value?.physics && <td>{value.physics}</td>}
                               </tr>
                             );
                           })}
