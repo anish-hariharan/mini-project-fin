@@ -1,10 +1,12 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import "./UserView.css";
 import { useState } from "react";
 import AddNewAcademicsForm from "./AddNewAcademicsForm";
+import { updateEducationalHistory } from "../redux/actions/UserActions";
 
 const UserView = () => {
+  const dispatch = useDispatch();
   const param = useParams();
   const user = useSelector(({ store }) => {
     const users = store.users;
@@ -15,6 +17,16 @@ const UserView = () => {
     user.educationHistory.length > 0
       ? user.educationHistory.map((history) => history.class)
       : [];
+  const [editMode, setEditMode] = useState(null);
+  const [tamilMark, setTamilMark] = useState("");
+  const [englishMark, setEnglishMark] = useState("");
+  const [mathsMark, setMathsMark] = useState("");
+  const [scienceMark, setScienceMark] = useState("");
+  const [socialMark, setSocialMark] = useState("");
+  const [phyMark, setPhyMark] = useState("");
+  const [chemMark, setChemMark] = useState("");
+  const [bioMark, setBiologyMark] = useState("");
+  const [csMark, setCSMark] = useState("");
 
   const handleOpenAddAcademicForm = () => setAddAcademicForm(true);
   const handleCloseAddAcademicForm = () => setAddAcademicForm(false);
@@ -28,6 +40,7 @@ const UserView = () => {
         <th>Maths</th>
         <th>Science</th>
         <th>Social</th>
+        <th></th>
       </>
     ),
     MATHSBIOLOGY: (
@@ -39,6 +52,7 @@ const UserView = () => {
         <th>Physics</th>
         <th>Chemistry</th>
         <th>Biology</th>
+        <th></th>
       </>
     ),
     MATHSCOMPUTER: (
@@ -50,8 +64,23 @@ const UserView = () => {
         <th>Physics</th>
         <th>Chemistry</th>
         <th>Computer Science</th>
+        <th></th>
       </>
     ),
+  };
+
+  const handleSubmit = (values) => {
+    dispatch(updateEducationalHistory({ ...values, userId: param.id }));
+    setEditMode(null);
+    setTamilMark(null);
+    setEnglishMark(null);
+    setMathsMark(null);
+    setScienceMark(null);
+    setSocialMark(null);
+    setPhyMark(null);
+    setChemMark(null);
+    setBiologyMark(null);
+    setCSMark(null);
   };
 
   return (
@@ -85,18 +114,162 @@ const UserView = () => {
                           <tr>{tableSubjects[education.department]}</tr>
                         </thead>
                         <tbody>
-                          {education?.examsAndScores.map((value, index) => {
+                          {education?.examsAndScores.map((value) => {
                             return (
-                              <tr key={index}>
+                              <tr key={value.id}>
                                 <td>{value.examName}</td>
-                                <td>{value.tamil}</td>
-                                <td>{value.english}</td>
-                                <td>{value.maths}</td>
-                                {value?.science && <td>{value.science}</td>}
-                                {value?.social && <td>{value.social}</td>}
-                                {value?.physics && <td>{value.physics}</td>}
-                                {value?.physics && <td>{value.physics}</td>}
-                                {value?.physics && <td>{value.physics}</td>}
+                                <td>
+                                  {editMode === value.id ? (
+                                    <input
+                                      value={tamilMark}
+                                      onChange={(e) =>
+                                        setTamilMark(e.target.value)
+                                      }
+                                    ></input>
+                                  ) : (
+                                    value.tamil
+                                  )}
+                                </td>
+                                <td>
+                                  {editMode === value.id ? (
+                                    <input
+                                      value={englishMark}
+                                      onChange={(e) =>
+                                        setEnglishMark(e.target.value)
+                                      }
+                                    ></input>
+                                  ) : (
+                                    value.english
+                                  )}
+                                </td>
+                                <td>
+                                  {editMode === value.id ? (
+                                    <input
+                                      value={mathsMark}
+                                      onChange={(e) =>
+                                        setMathsMark(e.target.value)
+                                      }
+                                    ></input>
+                                  ) : (
+                                    value.maths
+                                  )}
+                                </td>
+
+                                {value?.science && (
+                                  <td>
+                                    {editMode === value.id ? (
+                                      <input
+                                        value={scienceMark}
+                                        onChange={(e) =>
+                                          setScienceMark(e.target.value)
+                                        }
+                                      ></input>
+                                    ) : (
+                                      value.science
+                                    )}
+                                  </td>
+                                )}
+                                {value?.social && (
+                                  <td>
+                                    {editMode === value.id ? (
+                                      <input
+                                        value={socialMark}
+                                        onChange={(e) =>
+                                          setSocialMark(e.target.value)
+                                        }
+                                      ></input>
+                                    ) : (
+                                      value.science
+                                    )}
+                                  </td>
+                                )}
+
+                                {value?.physics && (
+                                  <td>
+                                    {editMode === value.id ? (
+                                      <input
+                                        value={phyMark}
+                                        onChange={(e) =>
+                                          setPhyMark(e.target.value)
+                                        }
+                                      ></input>
+                                    ) : (
+                                      value.physics
+                                    )}
+                                  </td>
+                                )}
+                                {value?.chemistry && (
+                                  <td>
+                                    {editMode === value.id ? (
+                                      <input
+                                        value={chemMark}
+                                        onChange={(e) =>
+                                          setChemMark(e.target.value)
+                                        }
+                                      ></input>
+                                    ) : (
+                                      value.chemistry
+                                    )}
+                                  </td>
+                                )}
+                                {value?.biology && (
+                                  <td>
+                                    {editMode === value.id ? (
+                                      <input
+                                        value={bioMark}
+                                        onChange={(e) =>
+                                          setBiologyMark(e.target.value)
+                                        }
+                                      ></input>
+                                    ) : (
+                                      value.biology
+                                    )}
+                                  </td>
+                                )}
+                                {value?.computerScience && (
+                                  <td>
+                                    {editMode === value.id ? (
+                                      <input
+                                        value={csMark}
+                                        onChange={(e) =>
+                                          setCSMark(e.target.value)
+                                        }
+                                      ></input>
+                                    ) : (
+                                      value.computerScience
+                                    )}
+                                  </td>
+                                )}
+                                <td>
+                                  {editMode === value.id ? (
+                                    <button
+                                      onClick={() =>
+                                        handleSubmit({
+                                          value,
+                                          tamilMark,
+                                          englishMark,
+                                          scienceMark,
+                                          socialMark,
+                                          mathsMark,
+                                          bioMark,
+                                          phyMark,
+                                          chemMark,
+                                          csMark,
+                                          std: education.class,
+                                          examName: value.examName,
+                                        })
+                                      }
+                                    >
+                                      Save
+                                    </button>
+                                  ) : (
+                                    <button
+                                      onClick={() => setEditMode(value.id)}
+                                    >
+                                      Edit
+                                    </button>
+                                  )}
+                                </td>
                               </tr>
                             );
                           })}

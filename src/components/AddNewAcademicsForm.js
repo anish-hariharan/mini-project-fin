@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import "./AddNewAcademicsForm.css";
 import { addAcademics } from "../redux/actions/UserActions";
+import { v4 as uuidV4 } from "uuid";
 
 const AddNewAcademicsForm = ({ open, onClose }) => {
   const dispatch = useDispatch();
@@ -84,6 +85,7 @@ const AddNewAcademicsForm = ({ open, onClose }) => {
             ...(selectDepartment === "Maths ComputerScience" && {
               computerScience: "N/A",
             }),
+            id: uuidV4(),
           },
           {
             examName: "HalfYearly",
@@ -105,6 +107,7 @@ const AddNewAcademicsForm = ({ open, onClose }) => {
             ...(selectDepartment === "Maths ComputerScience" && {
               computerScience: "N/A",
             }),
+            id: uuidV4(),
           },
           {
             examName: "Annual",
@@ -126,6 +129,7 @@ const AddNewAcademicsForm = ({ open, onClose }) => {
             ...(selectDepartment === "Maths ComputerScience" && {
               computerScience: "N/A",
             }),
+            id: uuidV4(),
           },
         ],
       },
@@ -133,6 +137,7 @@ const AddNewAcademicsForm = ({ open, onClose }) => {
 
     dispatch(addAcademics({ id: params.id, updatedHistory }));
     handleClose();
+    setStandard("");
   };
 
   useEffect(() => {
@@ -143,10 +148,12 @@ const AddNewAcademicsForm = ({ open, onClose }) => {
     const filteredArray = totalAcademicses.filter(
       (item) => !userClass.includes(item)
     );
-
     setAvailableClass(filteredArray);
-    setStandard(filteredArray[0]);
     setDepartment(selectedStandard <= 10 ? "Below 10" : "Maths Biology");
+
+    if (selectedStandard === "") {
+      setStandard(filteredArray[0]);
+    }
   }, [user, selectedStandard]);
 
   return (
@@ -168,8 +175,8 @@ const AddNewAcademicsForm = ({ open, onClose }) => {
               <select
                 id="choose-class-from-the-option"
                 className="selectField"
-                value={selectedStandard}
-                onChange={(e) => handleChangeStandard(e)}
+                defaultValue={selectedStandard}
+                onClick={(e) => handleChangeStandard(e)}
               >
                 {availableClass.length ? (
                   availableClass.map((standard, index) => (
