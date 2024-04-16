@@ -27,39 +27,33 @@ export const addAcademics = ({ id, updatedHistory }) => {
 };
 
 export const updateEducationalHistory = ({
-  value,
-  bioMark,
-  chemMark,
-  csMark,
-  englishMark,
-  mathsMark,
-  phyMark,
-  scienceMark,
-  socialMark,
-  std,
-  tamilMark,
+  updatedEducationalHistory,
   userId,
-  examName,
+  std,
+  user,
 }) => {
-  const updatedEducationalHistory = {
-    english: englishMark || value.english,
-    examName: examName,
-    id: value.id,
-    maths: mathsMark || value.maths,
-    ratings: "5",
-    science: scienceMark || value.science,
-    social: socialMark || value.social,
-    tamil: tamilMark || value.tamil,
-    ...(value?.biology && { biology: bioMark || value.biology }),
-    ...(value?.physics && { physics: phyMark || value.physics }),
-    ...(value?.chemistry && { chemistry: chemMark || value.chemistry }),
-    ...(value?.computerScience && {
-      computerScience: csMark || value.computerScience,
+  const updatedUser = {
+    ...user,
+    educationHistory: user.educationHistory.map((history) => {
+      if (history.class === std) {
+        return {
+          ...history,
+          examsAndScores: history.examsAndScores.map((value) => {
+            if (value.id === updatedEducationalHistory.id) {
+              return updatedEducationalHistory;
+            }
+
+            return value;
+          }),
+        };
+      }
+
+      return history;
     }),
   };
 
   return {
     type: UPDATE_EDUCATIONAL_HISTORY,
-    payload: { updatedEducationalHistory, std, userId },
+    payload: { userId, std, updatedUser },
   };
 };

@@ -319,40 +319,15 @@ const userReducer = (state = initialState, action) => {
   }
 
   if (action.type === UPDATE_EDUCATIONAL_HISTORY) {
-    const { updatedEducationalHistory, std, userId } = action.payload;
+    const { userId, updatedUser } = action.payload;
 
-    const user = state.users.find((user) => user.id === userId);
-
-    const updatedUser = {
-      ...user,
-      educationHistory: user.educationHistory.map((history) => {
-        if (history.class === std) {
-          return {
-            ...history,
-            examsAndScores: history.examsAndScores.map((value) => {
-              if (value.id === updatedEducationalHistory.id) {
-                return updatedEducationalHistory;
-              }
-
-              return value;
-            }),
-          };
-        }
-
-        return history;
-      }),
-    };
-
-    const updatedState = state.users.map((user) => {
-      if (user.id === userId) {
-        return updatedUser;
-      }
-
-      return user;
-    });
+    const updatedUserState = [
+      ...state.users.filter((user) => user.id !== userId),
+      Object.assign({}, updatedUser),
+    ];
 
     return {
-      users: [...updatedState],
+      users: [...updatedUserState],
     };
   }
 

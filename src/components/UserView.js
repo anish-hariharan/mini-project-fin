@@ -1,9 +1,12 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import "./UserView.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AddNewAcademicsForm from "./AddNewAcademicsForm";
-import { updateEducationalHistory } from "../redux/actions/UserActions";
+import {
+  getStudentExamMarks,
+  updateEducationalHistory,
+} from "../redux/actions/UserActions";
 
 const UserView = () => {
   const dispatch = useDispatch();
@@ -17,7 +20,7 @@ const UserView = () => {
     user.educationHistory.length > 0
       ? user.educationHistory.map((history) => history.class)
       : [];
-  const [editMode, setEditMode] = useState(null);
+  const [editMode, setEditMode] = useState("");
   const [tamilMark, setTamilMark] = useState("");
   const [englishMark, setEnglishMark] = useState("");
   const [mathsMark, setMathsMark] = useState("");
@@ -27,9 +30,18 @@ const UserView = () => {
   const [chemMark, setChemMark] = useState("");
   const [bioMark, setBiologyMark] = useState("");
   const [csMark, setCSMark] = useState("");
+  const [defaultMarks, setDefaultMarks] = useState({});
 
   const handleOpenAddAcademicForm = () => setAddAcademicForm(true);
   const handleCloseAddAcademicForm = () => setAddAcademicForm(false);
+  const handleSetDefaultMarks = ({ classId, examId, examName }) =>
+    setDefaultMarks(
+      getStudentMark({
+        classId,
+        examId,
+        examName,
+      })
+    );
 
   const tableSubjects = {
     BELOWTEN: (
@@ -69,18 +81,59 @@ const UserView = () => {
     ),
   };
 
+  const updateEducationHistory = (values) => {
+    const updatedEducationalHistory = {
+      english: englishMark || values.english,
+      examName: values.examName,
+      id: values.value.id,
+      maths: mathsMark || values.maths,
+      ratings: "5",
+      science: scienceMark || values.science,
+      social: socialMark || values.social,
+      tamil: tamilMark || values.tamil,
+      ...(values?.biology && { biology: bioMark || values.biology }),
+      ...(values?.physics && { physics: phyMark || values.physics }),
+      ...(values?.chemistry && { chemistry: chemMark || values.chemistry }),
+      ...(values?.computerScience && {
+        computerScience: csMark || values.computerScience,
+      }),
+    };
+
+    dispatch(
+      updateEducationalHistory({
+        updatedEducationalHistory,
+        userId: param.id,
+        std: values.std,
+        user,
+      })
+    );
+  };
+
   const handleSubmit = (values) => {
-    dispatch(updateEducationalHistory({ ...values, userId: param.id }));
-    setEditMode(null);
-    setTamilMark(null);
-    setEnglishMark(null);
-    setMathsMark(null);
-    setScienceMark(null);
-    setSocialMark(null);
-    setPhyMark(null);
-    setChemMark(null);
-    setBiologyMark(null);
-    setCSMark(null);
+    updateEducationHistory(values);
+
+    setEditMode("");
+    setTamilMark("");
+    setEnglishMark("");
+    setMathsMark("");
+    setScienceMark("");
+    setSocialMark("");
+    setPhyMark("");
+    setChemMark("");
+    setBiologyMark("");
+    setCSMark("");
+  };
+
+  const getStudentMark = ({ classId, examId, examName }) => {
+    const classMark = user.educationHistory.find(
+      (exam) => exam.class === classId
+    );
+
+    const marks = classMark.examsAndScores.find(
+      (exam) => exam.id === examId && exam.examName === examName
+    );
+
+    return marks;
   };
 
   return (
@@ -121,7 +174,9 @@ const UserView = () => {
                                 <td>
                                   {editMode === value.id ? (
                                     <input
-                                      value={tamilMark}
+                                      defaultValue={
+                                        defaultMarks?.tamil ?? tamilMark
+                                      }
                                       onChange={(e) =>
                                         setTamilMark(e.target.value)
                                       }
@@ -133,7 +188,9 @@ const UserView = () => {
                                 <td>
                                   {editMode === value.id ? (
                                     <input
-                                      value={englishMark}
+                                      defaultValue={
+                                        defaultMarks?.english ?? englishMark
+                                      }
                                       onChange={(e) =>
                                         setEnglishMark(e.target.value)
                                       }
@@ -145,7 +202,9 @@ const UserView = () => {
                                 <td>
                                   {editMode === value.id ? (
                                     <input
-                                      value={mathsMark}
+                                      defaultValue={
+                                        defaultMarks?.maths ?? mathsMark
+                                      }
                                       onChange={(e) =>
                                         setMathsMark(e.target.value)
                                       }
@@ -159,7 +218,9 @@ const UserView = () => {
                                   <td>
                                     {editMode === value.id ? (
                                       <input
-                                        value={scienceMark}
+                                        defaultValue={
+                                          defaultMarks?.science ?? scienceMark
+                                        }
                                         onChange={(e) =>
                                           setScienceMark(e.target.value)
                                         }
@@ -173,7 +234,9 @@ const UserView = () => {
                                   <td>
                                     {editMode === value.id ? (
                                       <input
-                                        value={socialMark}
+                                        defaultValue={
+                                          defaultMarks?.social ?? socialMark
+                                        }
                                         onChange={(e) =>
                                           setSocialMark(e.target.value)
                                         }
@@ -264,7 +327,14 @@ const UserView = () => {
                                     </button>
                                   ) : (
                                     <button
-                                      onClick={() => setEditMode(value.id)}
+                                      onClick={() => {
+                                        setEditMode(value.id);
+                                        handleSetDefaultMarks({
+                                          classId: education.class,
+                                          examId: value.id,
+                                          examName: value.examName,
+                                        });
+                                      }}
                                     >
                                       Edit
                                     </button>
